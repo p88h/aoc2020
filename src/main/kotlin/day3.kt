@@ -21,6 +21,6 @@ internal fun tobogan(area: List<CharArray>, dir: Point): Int {
 fun main(args: Array<String>) {
     val inputFileName = if (args.isEmpty()) Resources.getResource("day3.in").path else args[0]
     val area = BufferedReader(FileReader(inputFileName)).lineSequence().map { it.toCharArray() }.toList()
-    val dirs = arrayOf(Point(1,1), Point(3,1), Point(5,1,), Point(7,1 ), Point( 1, 2))
-    println(dirs.fold(1) {s, it -> s * tobogan(area,it)})
+    val dirs = arrayOf(Point(1, 1), Point(3, 1), Point(5, 1), Point(7, 1), Point(1, 2))
+    println(dirs.fold(1) { s, it -> s * tobogan(area, it) })
 }
