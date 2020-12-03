@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
-import tcod as libtcod
+import tcod
 import time
 
 def main():
     screen_width = 80
     screen_height = 50
-    libtcod.console_set_custom_font('dejavu16x16_gs_tc.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
-    libtcod.console_init_root(screen_width + 2, screen_height + 2, 'tobogan fun', False)
-    libtcod.console_set_default_foreground(0, libtcod.white)
+    console = tcod.Console(screen_width + 2, screen_height + 2)
+    tileset = tcod.tileset.load_tilesheet("dejavu16x16_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD)
+    context = tcod.context.new(columns=console.width, rows=console.height, tileset=tileset)
+    console.clear(bg=tcod.white,fg=tcod.black)
 
     # read the tiles
     mapfile = open('map.file', 'r')
@@ -27,9 +28,9 @@ def main():
                 ry = y + dy;
                 rx = x + dx;
                 if (ry < 0 or ry > maph): 
-                    libtcod.console_put_char(0, x, y, ' ')
+                    console.print(x, y, ' ')
                 else:
-                    libtcod.console_put_char(0, x, y, lines[ry % maph][rx % mapw])
+                    console.print(x, y, lines[ry % maph][rx % mapw])
 
     # center position
     px = int(screen_width / 2)
@@ -50,18 +51,18 @@ def main():
     # we start paused
     move = False
 
-    while not libtcod.console_is_window_closed():
-        paint(dx, dy, lines)
+    while True:
+        paint(dx, dy)
         # draw current position
-        libtcod.console_put_char(0, px, py, '@', libtcod.BKGND_NONE)
+        console.print(px, py, '!')
 
         # draw 'history'
         for pp in range(1, py+dy):
             ch = lines[py - pp + dy][(px - pp*3 + dx) % mapw]
+            if px < pp * 3:
+                break
             if ch == '#':
-                libtcod.console_put_char(0, px - pp * 3, py - pp, 'X', libtcod.BKGND_NONE)
-            else:
-                libtcod.console_put_char(0, px - pp * 3, py - pp, 'O', libtcod.BKGND_NONE)
+                console.print(px - pp * 3, py - pp, '%')
 
 
         if move and my < maph:
@@ -71,23 +72,21 @@ def main():
             dy += 1
             mx = (mx + 3) % mapw
             my += 1
-        else:
-            time.sleep(0.1)
 
-        # print score
-        libtcod.console_put_char(0, 0, 0, str(int(tot / 1000) % 10), libtcod.BKGND_NONE)
-        libtcod.console_put_char(0, 1, 0, str(int(tot / 100) % 10), libtcod.BKGND_NONE)
-        libtcod.console_put_char(0, 2, 0, str(int(tot / 10) % 10), libtcod.BKGND_NONE)
-        libtcod.console_put_char(0, 3, 0, str(tot % 10), libtcod.BKGND_NONE)
+        time.sleep(0.05)
 
-        libtcod.console_flush()
+        console.print(0, 0, "%={}".format(tot))
+        context.present(console)
 
         # check inputs
-        key = libtcod.console_check_for_keypress()
-        if key.vk == libtcod.KEY_SPACE:
-            move = not move
-        if key.vk == libtcod.KEY_ESCAPE:
-            return True
+        for event in tcod.event.get():
+            if event.type == "QUIT":
+                return True
+            if event.type == "KEYDOWN":
+                if event.sym == tcod.event.K_ESCAPE:
+                    return True
+                if event.sym == tcod.event.K_SPACE:
+                    move = not move
 
 if __name__ == '__main__':
     main()
