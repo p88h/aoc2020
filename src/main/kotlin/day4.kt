@@ -16,50 +16,30 @@ internal class Passport {
     }
 
     var fields = HashMap<String, String>()
-    fun add(key: String, value: String) {
-        fields[key] = value;
+
+    fun valid1(): Boolean {
+        return checks.keys.fold(true) { s, it -> s && fields.containsKey(it) }
     }
 
-    fun valid1(): Int {
-        for (key in checks.keys) {
-            if (!fields.containsKey(key)) {
-                return 0;
-            }
-        }
-        return 1;
-    }
-
-    fun valid2(): Int {
-        for (key in checks.keys) {
-            if (!fields.containsKey(key) || !checks[key]!!.matches(fields[key]!!)) {
-                return 0;
-            }
-        }
-        return 1;
+    fun valid2(): Boolean {
+        return checks.entries.fold(valid1()) { s, (key, regex) -> s && regex.matches(fields[key]!!) }
     }
 }
 
 fun main(args: Array<String>) {
     val inputFileName = if (args.isEmpty()) Resources.getResource("day4.in").path else args[0]
     val reader = BufferedReader(FileReader(inputFileName))
-    var cur = Passport()
-    var tot1 = 0
-    var tot2 = 0
+    var passports = arrayListOf(Passport())
     for (line in reader.lineSequence()) {
         if (line.isEmpty()) {
-            tot1 += cur.valid1()
-            tot2 += cur.valid2()
-            cur = Passport()
-            continue
-        }
-        for (keyval in line.split(" ")) {
-            val (key, value) = keyval.split(":")
-            cur.add(key, value)
+            passports.add(Passport())
+        } else {
+            for (keyval in line.split(" ")) {
+                val (key, value) = keyval.split(":")
+                passports.last().fields.put(key, value)
+            }
         }
     }
-    tot1 += cur.valid1()
-    tot2 += cur.valid2()
-    println(tot1)
-    println(tot2)
+    println(passports.count { it.valid1() })
+    println(passports.count { it.valid2() })
 }
-
