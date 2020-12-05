@@ -1,14 +1,7 @@
-import com.google.common.io.Resources
-import java.io.BufferedReader
-import java.io.FileReader
-
-fun main(args: Array<String>) {
-    val inputFileName = if (args.isEmpty()) Resources.getResource("day5.in").path else args[0]
-    val seats = BufferedReader(FileReader(inputFileName)).lineSequence().map {
-        it.replace(Regex("[BR]"), "1")
-            .replace(Regex("[FL]"),"0")
-            .toInt(2)
-    }.sorted().toList();
+fun main() {
+    val seats = generateSequence(::readLine).map {
+        it.toCharArray().fold(0) { r, c -> (r * 2 + (1 - (c.toInt().and(4)) / 4)) }
+    }.sorted().toList()
     println("min: ${seats.first()} max: ${seats.last()}")
-    seats.forEachIndexed{ pos, num -> if (num != pos + seats.first()) { println(num - 1); return } }
+    println(seats.fold(seats.first()) { r, n -> if (n == r) n + 1 else r })
 }
