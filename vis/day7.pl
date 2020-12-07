@@ -34,18 +34,15 @@ my %rules = ();
 
 while (<>) {
     @_ = split / /, $_;
-    #print bag($_[0], $_[1])." => ";
     my $bag = $_[0]." ".$_[1];
     for $idx (1..(scalar @_)/4 - 1) {
-        #print $_[4*$idx]." x ".bag($_[4*$idx+1],$_[4*$idx+2])." ";    
         $rules{$bag} .= $_[4*$idx]." ".$_[4*$idx+1]." ".$_[4*$idx+2].";";
     } 
-    #print "\n";
 }
 
-@old =  ();
-@bags = ("shiny gold");
-$W = 34;
+my @old =  ();
+my @bags = ("shiny gold");
+my $W = 34;
 my $p = 0;
 
 while (@bags) {
@@ -56,13 +53,10 @@ while (@bags) {
     my $px = $p % $W, $py = int($p / $W);
     my $nx = $n % $W, $ny = int($n / $W);
     print locate(1 + $py, 1 + $px * 4),bag($bag);
-    #color reset;
     print locate(1 + $ny, 1 + $nx * 4),"<<<";
-    #print "open $bag (contains: $rules{$bag})\n";    
     for (split(/;/, $rules{$bag})) {
         m/^(\d+) (.*)$/;
         for (1..$1) { 
-            #print "add $2\n";
             $t++; 
             my $tx = $t % $W, $ty = int($t / $W);
             print locate(1 + $ty, 1 + $tx * 4),bag($2);
