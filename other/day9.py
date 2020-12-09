@@ -1,15 +1,11 @@
 import sys
 from itertools import combinations
 
-
 # part 1, O(N*P**2)
 nums = []
-for line in sys.stdin:
-    q = int(line)
-    if len(nums) >= 25:
-        if not any(q == b + c for (b, c) in combinations(nums[-25:], 2)):
-            print(q)
-            break
+for q in map(int, sys.stdin):
+    if len(nums) >= 25 and not any(q == b + c for (b, c) in combinations(nums[-25:], 2)):
+        break
     nums.append(q)
 
 # part 2, O(N-ish)
@@ -21,4 +17,4 @@ for j in range(len(nums)):
         i += 1
     if t == q:
         rng = nums[i:j]
-        print("sum({}) = {}\n{}\n".format(rng, q, min(rng)+max(rng)))
+        print("{} = sum({})\n{}\n".format(q, rng, min(rng) + max(rng)))
