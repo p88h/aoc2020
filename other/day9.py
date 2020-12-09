@@ -1,11 +1,9 @@
 import sys
 from itertools import combinations
 
-nums = []
-runs = []
 
 # part 1, O(N*P**2)
-q = 0
+nums = []
 for line in sys.stdin:
     q = int(line)
     if len(nums) >= 25:
@@ -15,8 +13,7 @@ for line in sys.stdin:
     nums.append(q)
 
 # part 2, O(N-ish)
-t = 0
-i = 0
+t, i = 0, 0
 for j in range(len(nums)):
     t += nums[j]
     while i <= j and t > q:
