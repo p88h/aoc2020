@@ -2,7 +2,7 @@ fun part1(nums: List<Long>): Long {
     var sums = HashMap<Long, Long>()
     for (a in nums.indices) {
         val b = a - 25
-        if (b >= 0 && nums[a]!! !in sums) {
+        if (b >= 0 && nums[a] !in sums) {
             println(nums[a])
             return nums[a]
         }
@@ -37,7 +37,7 @@ fun part2(nums: List<Long>, q: Long): Long {
         }
         if (tot == q) {
             val found = nums.subList(i, j)
-            return found.min()!! + found.max()!!
+            return found.minOrNull()!! + found.maxOrNull()!!
         }
     }
     return 0L

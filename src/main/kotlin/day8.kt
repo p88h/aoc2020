@@ -14,13 +14,9 @@ data class Machine(val code: List<Instruction>) {
         while (pos < code.size && !used[pos]) {
             used[pos] = true;
             var ins = code[pos]
-            if (pos == magic) when (ins.op) {
-                Opcode.jmp -> {
-                    ins = Instruction(Opcode.nop, ins.mod)
-                }
-                Opcode.nop -> {
-                    ins = Instruction(Opcode.jmp, ins.mod)
-                }
+            if (pos == magic) {
+                if (ins.op == Opcode.jmp) ins = Instruction(Opcode.nop, ins.mod)
+                else if (ins.op == Opcode.nop) ins = Instruction(Opcode.jmp, ins.mod)
             }
             when (ins.op) {
                 Opcode.nop -> {
