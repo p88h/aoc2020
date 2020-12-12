@@ -1,7 +1,3 @@
-import com.google.common.io.Resources
-import java.io.File
-
-// O(N * P)
 fun part1(nums: List<Long>): Long {
     var sums = HashMap<Long, Long>()
     for (a in nums.indices) {
@@ -30,7 +26,6 @@ fun part1(nums: List<Long>): Long {
     return 0L
 }
 
-// O(N)
 fun part2(nums: List<Long>, q: Long): Long {
     var tot = 0L
     var i = 0
@@ -49,7 +44,6 @@ fun part2(nums: List<Long>, q: Long): Long {
 }
 
 fun main(args: Array<String>) {
-    val inputFileName = if (args.isEmpty()) Resources.getResource("day9.in").path else args[0]
-    val nums = File(inputFileName).bufferedReader().readLines().map { it.toLong() }.toList()
+    val nums = allLines(args, "day9.in").map { it.toLong() }.toList()
     println(part2(nums, part1(nums)))
 }

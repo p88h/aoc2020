@@ -1,7 +1,3 @@
-import com.google.common.io.Resources
-import java.io.BufferedReader
-import java.io.FileReader
-
 internal class Passport {
     companion object {
         val checks = mapOf(
@@ -27,10 +23,8 @@ internal class Passport {
 }
 
 fun main(args: Array<String>) {
-    val inputFileName = if (args.isEmpty()) Resources.getResource("day4.in").path else args[0]
-    val reader = BufferedReader(FileReader(inputFileName))
     var passports = arrayListOf(Passport())
-    for (line in reader.lineSequence()) {
+    for (line in allLines(args, "day4.in")) {
         if (line.isEmpty()) {
             passports.add(Passport())
         } else {

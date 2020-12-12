@@ -1,6 +1,3 @@
-import com.google.common.io.Resources
-import java.io.File
-
 internal data class Seat(val pos: Pair<Int, Int>) {
     var adj = ArrayList<Pair<Int, Int>>()
     var nc = 0
@@ -34,8 +31,7 @@ internal data class Seat(val pos: Pair<Int, Int>) {
 }
 
 fun main(args: Array<String>) {
-    val inputFileName = if (args.isEmpty()) Resources.getResource("day11.in").path else args[0]
-    var area = File(inputFileName).bufferedReader().lineSequence().map { it.toCharArray() }.toList()
+    var area = allLines(args, "day11.in").map { it.toCharArray() }.toList()
     var seats = ArrayList<Seat>()
     for (i in area.indices) for (j in area[i].indices) if (area[i][j] != '.') seats.add(Seat(i to j))
     seats.forEach { it.InitAdj(area, 1) }

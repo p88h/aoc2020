@@ -1,6 +1,3 @@
-import com.google.common.io.Resources
-import java.io.File
-
 internal data class Graph(val start: String) {
     var contents = HashMap<String, ArrayList<Pair<String, Int>>>()
     var inverted = HashMap<String, ArrayList<String>>()
@@ -37,9 +34,8 @@ internal data class Graph(val start: String) {
 }
 
 fun main(args: Array<String>) {
-    val inputFileName = if (args.isEmpty()) Resources.getResource("day7.in").path else args[0]
     var graph = Graph("shiny gold")
-    File(inputFileName).bufferedReader().readLines().forEach {
+    allLines(args, "day7.in").forEach {
         val tokens = it.split(" ")
         val outer = tokens[0] + " " + tokens[1];
         graph.contents[outer] = ArrayList()

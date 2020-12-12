@@ -1,11 +1,5 @@
-import com.google.common.io.Resources
-import java.io.File
-
 fun main(args: Array<String>) {
-    val inputFileName = if (args.isEmpty()) Resources.getResource("day10.in").path else args[0]
-    var nums = arrayListOf(0L)
-    nums.addAll(File(inputFileName).bufferedReader().readLines().map { it.toLong() })
-    nums.sort()
+    var nums = arrayListOf(0L).also { it.addAll(allLines(args, "day10.in").map { s -> s.toLong() }) }.also { it.sort() }
     nums.add(nums.last() + 3)
     val deltas = nums.zipWithNext { a, b -> b - a }
     println(deltas.count { it.equals(1L) } * deltas.count { it.equals(3L) });

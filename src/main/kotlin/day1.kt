@@ -1,12 +1,4 @@
-import java.io.File
-import java.util.Scanner
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
-import kotlin.collections.set
-import com.google.common.io.Resources;
-
-fun part1(input: ArrayList<Int>) {
+fun part1(input: List<Int>) {
     val prev = HashSet<Int>();
     for (num in input) {
         if (prev.contains(2020 - num)) {
@@ -16,7 +8,7 @@ fun part1(input: ArrayList<Int>) {
     }
 }
 
-fun part2(input: ArrayList<Int>) {
+fun part2(input: List<Int>) {
     val prev = HashSet<Int>();
     val sums = HashMap<Int, Int>();
     for (num in input) {
@@ -34,15 +26,7 @@ fun part2(input: ArrayList<Int>) {
 }
 
 fun main(args: Array<String>) {
-    var inputFileName = Resources.getResource("day1.in").path;
-    if (!args.isEmpty()) {
-        inputFileName = args[0];
-    }
-    val reader = Scanner(File(inputFileName));
-    val input = ArrayList<Int>();
-    while (reader.hasNextInt()) {
-        input.add(reader.nextInt());
-    }
-    part1(input);
-    part2(input);
+    val input = allLines(args, "day1.in").map{it.toInt()}.toList()
+    part1(input)
+    part2(input)
 }
