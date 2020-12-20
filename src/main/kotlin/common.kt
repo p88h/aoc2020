@@ -7,3 +7,8 @@ fun allLines(args: Array<String>, defaultFile: String): Sequence<String> {
     val inputFileName = if (args.isEmpty()) Resources.getResource(defaultFile).path else args[0]
     return File(inputFileName).bufferedReader().lineSequence()
 }
+
+fun allBlocks(args: Array<String>, defaultFile: String): List<String> {
+    val inputFileName = if (args.isEmpty()) Resources.getResource(defaultFile).path else args[0]
+    return File(inputFileName).reader().readText().split("\n\n")
+}
