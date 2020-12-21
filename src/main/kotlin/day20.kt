@@ -3,9 +3,9 @@ internal fun bswap(code: Int): Int {
 }
 
 internal val monster = arrayListOf(
-    "                  # ".toCharArray(),
-    "#    ##    ##    ###".toCharArray(),
-    " #  #  #  #  #  #   ".toCharArray()
+    "                  @ ".toCharArray(),
+    "*    __    __    ()>".toCharArray(),
+    " \\  /  \\  /  \\  /   ".toCharArray()
 )
 
 internal data class Tile(val id: Long, var area: ArrayList<CharArray>, val dim: Int = 10) {
@@ -30,13 +30,13 @@ internal data class Tile(val id: Long, var area: ArrayList<CharArray>, val dim: 
                 var match = true
                 for (i in pattern.indices) {
                     for (j in pattern[i].indices) {
-                        if (pattern[i][j] == '#' && area[y + i][x + j] == '.') match = false
+                        if (pattern[i][j] != ' ' && area[y + i][x + j] == '.') match = false
                     }
                 }
                 if (match) {
                     for (i in pattern.indices) {
                         for (j in pattern[i].indices) {
-                            if (pattern[i][j] == '#') area[y + i][x + j] = 'O'
+                            if (pattern[i][j] != ' ') area[y + i][x + j] = pattern[i][j]
                         }
                     }
                     cnt++
