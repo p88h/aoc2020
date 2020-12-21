@@ -10,8 +10,10 @@ internal data class Tile(val id: Long, val area: List<CharArray>) {
     }
 
     var neighbors = ArrayList<Int>()
-    var x = -1
-    var y = -1
+    var pos = Point(0,0)
+    fun left(except: HashSet<Int>): Int {
+        return neighbors.count { !except.contains(it) }
+    }
 }
 
 internal fun flip(code: Int): Int {
@@ -41,4 +43,29 @@ fun main(args: Array<String>) {
         }
     }
     println(tiles.fold(1L) { r, t -> if (t.neighbors.size == 2) r * t.id else r })
+    var cur = tiles.indices.fold(0) { r, t -> if (tiles[t].neighbors.size < tiles[r].neighbors.size) t else r }
+    var dir = Point(1, 0)
+    var visited = hashSetOf(cur)
+    do {
+        val cand = tiles[cur].neighbors.filter { !visited.contains(it) };
+        val next = cand.reduce { a, b -> if (tiles[a].left(visited) < tiles[b].left(visited)) a else b }
+        visited.add(cur)
+        tiles[next].pos = tiles[cur].pos + dir
+        println("visit $cur: ${tiles[cur].id}, cand: $cand pos=${tiles[cur].pos}")
+        cur = next
+    } while (cand.size > 1)
+    dir = Point(0, 1)
+    var line = HashSet(visited)
+    while (visited.size < tiles.size) {
+        var newline = HashSet<Int>()
+        for (cur in line) {
+            val next = tiles[cur].neighbors.first{ !visited.contains(it) }
+            tiles[next].pos = tiles[cur].pos + dir
+            println("next $next: ${tiles[next].id}, pos=${tiles[next].pos}")
+            newline.add(next)
+        }
+        visited.addAll(newline)
+        line.clear()
+        line.addAll(newline)
+    }
 }
