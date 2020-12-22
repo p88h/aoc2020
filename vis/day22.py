@@ -10,13 +10,18 @@ total = 0
 rate = 1
 threshold = 100
 
+p1, p2 = [[int(line) for line in block.splitlines()[1:]]
+          for block in open("day22.in").read().split('\n\n')]
+
+maxc = max(max(p1), max(p2))
+
 def paint(win, ofs, direction, values=[]):
-    global maxw
+    global maxw, maxc
     y = int(ofs/maxw)*2 - 1 
     x = 88 + direction * (int(ofs % maxw) * 4 + 8)
     if ofs < len(values):
         win.addstr(y+1, x, "┍━━┑")
-        win.addstr(y+2, x, "│{:02d}│".format(values[ofs]))
+        win.addstr(y+2, x, "│{:02d}│".format(values[ofs]), curses.A_BOLD if values[ofs] == maxc else 0)
         win.addstr(y+3, x, "└┈┈┘")
     else:
         if ofs < maxw: win.addstr(y+1, x, "    ")
@@ -75,9 +80,6 @@ def game(d1, d2, r, l):
         display(win, d1, pl, d2, pr, turn)
     return len(d1) > 0
 
-
-p1, p2 = [[int(line) for line in block.splitlines()[1:]]
-          for block in open("day22.in").read().split('\n\n')]
 
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 screen = curses.initscr()
