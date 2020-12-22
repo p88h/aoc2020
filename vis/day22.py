@@ -15,9 +15,9 @@ def paint(win, ofs, direction, values=[]):
     y = int(ofs/maxw)*2 - 1 
     x = 88 + direction * (int(ofs % maxw) * 4 + 8)
     if ofs < len(values):
-        win.addstr(y+1, x, "┏──┓")
+        win.addstr(y+1, x, "┍━━┑")
         win.addstr(y+2, x, "│{:02d}│".format(values[ofs]))
-        win.addstr(y+3, x, "┗──┛")
+        win.addstr(y+3, x, "└┈┈┘")
     else:
         if ofs < maxw: win.addstr(y+1, x, "    ")
         win.addstr(y+2, x, "    ")
@@ -84,8 +84,8 @@ screen = curses.initscr()
 curses.curs_set(0)
 header = curses.newwin(3, 172, 0, 0)
 
-header.addstr(1, 78, r'*<|:-)')
-header.addstr(1, 96, r'(\/) (°,,,,°) (\/)')
+header.addstr(1, 96, r'*<|:-)')
+header.addstr(1, 66, r'(\/) (°,,,,°) (\/)')
 header.refresh()
 game(deque(p1), deque(p2), True, 0)
 
