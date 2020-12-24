@@ -12,7 +12,7 @@ def main():
     console.clear(bg=tcod.white,fg=tcod.black)
 
     # read the tiles
-    mapfile = open('map.file', 'r')
+    mapfile = open('day3.in', 'r')
     lines = mapfile.readlines()
 
     # compute map width
